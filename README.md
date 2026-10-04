@@ -9,14 +9,9 @@ This mod has many interesting features:
 | Name | Type | Function | Notes |
 | --- | --- | --- | --- |
 | Inhaler | Inhaler | Used to trigger cores | The Inhaler must be equipped in the main hand. |
-| Disconnection Core | Core | Saves immediately | Cores must be equipped in the offhand. |
-| Chronos Core | Core | Saves immediately, can slow time for a duration, and saves again when the effect ends | Cores must be equipped in the offhand. |
+| Cocoon Core | Core | Creates a checkpoint immediately | Cores must be equipped in the offhand.(in countdown mode it also extends the survival time by one day) |
 | Molting Core | Core | Rolls back immediately | Cores must be equipped in the offhand. |
 | Tower Core | Core | Destroys yourself | Cores must be equipped in the offhand. **This forces the player into spectator mode and cannot be undone!** |
-| Fine Sand Core | Core | Marks a creature; when you roll back, that creature is brought to your side | Cores must be equipped in the offhand. Only one creature-marking core can be triggered at a time. |
-| Causality Core | Core | Marks a creature; when you die, the marked creature takes damage based on your max health, and you are healed | Cores must be equipped in the offhand. Only one creature-marking core can be triggered at a time. |
-| Myriad Core | Core | Marks a creature; when that creature is hurt, it modifies the items in your main hand and offhand | Cores must be equipped in the offhand. Only one creature-marking core can be triggered at a time. |
-| Stasis Core | Core | Marks a creature; that creature loses its AI for a while | Cores must be equipped in the offhand. Only one creature-marking core can be triggered at a time. |
 | Countdown | Mod config | At the start of a new day, the on-screen "Day X" changes to "X days remaining" | **When the countdown ends, the player is forced into spectator mode and cannot be undone!** |
 
 Credits:
@@ -36,14 +31,9 @@ Credits:
 | 名称 | 类型 | 功能 | 备注 |
 | --- | --- | --- | --- |
 | 吸入器 | 吸入器 | 用于触发药芯 | 吸入器需要装备在主手。 |
-| 断线 | 药芯 | 立即存档 | 药芯需要装备在副手。 |
-| 柯罗诺斯 | 药芯 | 立即存档，持续时间内可放缓时间，效果结束后再次存档 | 药芯需要装备在副手。 |
+| 化茧 | 药芯 | 立即存档 | 药芯需要装备在副手。（倒计时模式下额外延长一天存活时间）|
 | 蜕皮 | 药芯 | 立即回溯 | 药芯需要装备在副手。 |
 | 高塔 | 药芯 | 毁灭自己 | 药芯需要装备在副手，**该功能会使玩家强制进入旁观者模式且无法修改！** |
-| 细沙 | 药芯 | 标记一只生物，回溯时将该生物带到自己身边 | 药芯需要装备在副手，标记生物的药芯只能同时触发一个。 |
-| 因果 | 药芯 | 标记一只生物，死亡时使被标记的生物受到基于玩家最大生命值的伤害，并治疗玩家。 | 药芯需要装备在副手，标记生物的药芯只能同时触发一个。 |
-| 万象 | 药芯 | 标记一只生物，该生物受伤时修改玩家主副手的物品 | 药芯需要装备在副手，标记生物的药芯只能同时触发一个。 |
-| 停滞 | 药芯 | 标记一只生物，该生物失去AI一段时间 | 药芯需要装备在副手，标记生物的药芯只能同时触发一个。 |
 | 倒计时 | 模组配置 | 新的一天开始时屏幕上的第X天改为还剩X天。 | **倒计时结束后会使玩家强制进入旁观者模式且无法修改！** |
 
 感谢：
