@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.taobao.koi.rollbackmod.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "rollbackmod.refmap.json",
+  "mixins": [
+    "LevelMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
