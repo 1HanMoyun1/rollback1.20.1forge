@@ -1,51 +1,53 @@
-# Rollback Mod（1.20.1 Forge · 优化版）
+## English
+
+This mod was originally exclusive content for the "Minefading" special episode of *Relics of the Fading City*. It can be used in other modpacks, but you must credit the original author.
+
+The core mechanic of this mod is death rollback: when the player dies, they return to the nearest checkpoint before death rather than the spawn point.
+
+This mod has many interesting features:
+
+| Name | Type | Function | Notes |
+| --- | --- | --- | --- |
+| Inhaler | Inhaler | Used to trigger cores | The Inhaler must be equipped in the main hand. |
+| Disconnection Core | Core | Saves immediately | Cores must be equipped in the offhand. |
+| Chronos Core | Core | Saves immediately, can slow time for a duration, and saves again when the effect ends | Cores must be equipped in the offhand. |
+| Molting Core | Core | Rolls back immediately | Cores must be equipped in the offhand. |
+| Tower Core | Core | Destroys yourself | Cores must be equipped in the offhand. **This forces the player into spectator mode and cannot be undone!** |
+| Fine Sand Core | Core | Marks a creature; when you roll back, that creature is brought to your side | Cores must be equipped in the offhand. Only one creature-marking core can be triggered at a time. |
+| Causality Core | Core | Marks a creature; when you die, the marked creature takes damage based on your max health, and you are healed | Cores must be equipped in the offhand. Only one creature-marking core can be triggered at a time. |
+| Myriad Core | Core | Marks a creature; when that creature is hurt, it modifies the items in your main hand and offhand | Cores must be equipped in the offhand. Only one creature-marking core can be triggered at a time. |
+| Stasis Core | Core | Marks a creature; that creature loses its AI for a while | Cores must be equipped in the offhand. Only one creature-marking core can be triggered at a time. |
+| Countdown | Mod config | At the start of a new day, the on-screen "Day X" changes to "X days remaining" | **When the countdown ends, the player is forced into spectator mode and cannot be undone!** |
+
+Credits:
+
+* Friend @liyuu，without him, this mod wouldn't exist;
+* Friend @LAST-iMP, who taught the author how to build the mod from source code;
+* Everyone who plays this mod.
+
+## 中文
 
 本模组原为《亡都遗骨》特别篇："我的余晖"专属内容，可用于其他整合包，但需标注原作者。
-核心机制为死亡回溯：玩家死亡后回到死亡前最近的存档点，而非重生点。
 
-本仓库在开源原版（作者 Taobao @鲤鱼的个人小店，朋友 @liyuu / @LAST-iMP）基础上做了以下优化，
-详见 `../CHANGES.md`：
+模组核心为死亡回溯，玩家死亡后返回死亡前的最近节点，而非出生点。
 
-- **回溯 = 存档覆盖**：存档点保存整个世界（时间/天气/全部实体/全部方块实体/玩家完整 NBT），
-  回溯时整体覆盖，其他模组写入的数据（Capability 等）也能正确回溯；世界数据**分帧加载**
-  （实体/方块实体每 tick 恢复一批并强制加载区块，回溯更完整）。
-- **轻量化药芯**：只保留 **化茧（化茧药芯）/ 蜕皮 / 高塔** 三种药芯
-  （原柯罗诺斯、细沙、因果、万象、停滞及标记系统已移除）。
-- **吸入器**：单一物品（无材质分级）。**只能装 1 枚药芯**：鼠标拿起药芯
-  **右键点击吸入器**即可装入（主手吸入器 + 副手药芯右键也可）；**鼠标空手右键点击可再取出**；
-  装有药芯时**长按右键**（喝水动画）吸入并触发，单击会提示需要长按；
-  蜕皮回溯消耗吸入器 1 点耐久，耐久不受回溯覆盖影响。
-- **天数滚动特效**：全屏黑屏 + 居中时间，只有数字滚动，**大数从上往下滚入、小数从下往上滚入**
-  （如第 3 天 → 4：4 自上而下；第 3 天 → 2：2 自下而上；「还剩 X 天」同理），
-  前后文字固定不动，时长约 5 秒；**只有天数发生变化才播放**（回溯到同一天不滚动）；
-  黑屏注册在**最上层**，会盖住聊天栏与消息栏；左上角天数 HUD 可在配置中关闭。
-- **创造模式**：不参与多人共享伤害、不受共享伤害影响（创造玩家本身也不吃伤害）。
-- **倒计时 / 高塔**：以极限模式死亡——摧毁存档点 + 真正死亡 + 强制旁观者锁定。
-- **多人时间悖论防护**：所有在线玩家生命与背包统一（伤害共享 + 周期同步），
-  一次致命攻击所有人同时死亡、只回溯一次；配置里单独的“联动”开关，
-  打开时共享伤害交由 dontgethurt 的部位损伤系统接管。
-- **Cloth Config 设置界面**（中英双语），配置存于 `config/rollbackmod.json`。
-
-## 物品一览
+该模组有很多有趣的东西：
 
 | 名称 | 类型 | 功能 | 备注 |
 | --- | --- | --- | --- |
-| 吸入器 | 吸入器 | 装 1 枚药芯；长按右键吸入触发 | 鼠标右键点击装入，空手右键点击取出 |
-| 化茧 | 药芯 | 立即创建存档点（倒计时模式下额外延长一天） | 需装入吸入器 |
-| 蜕皮 | 药芯 | 立即回溯（消耗 1 点吸入器耐久） | 需装入吸入器 |
-| 高塔 | 药芯 | 毁灭自己（hardcore 式死亡，存档点被摧毁） | 需装入吸入器，**不可撤销** |
-| 倒计时 | 配置 | 屏幕显示“还剩 X 天”，归零触发高塔式毁灭 | 归零后强制旁观者，**不可撤销** |
+| 吸入器 | 吸入器 | 用于触发药芯 | 吸入器需要装备在主手。 |
+| 断线 | 药芯 | 立即存档 | 药芯需要装备在副手。 |
+| 柯罗诺斯 | 药芯 | 立即存档，持续时间内可放缓时间，效果结束后再次存档 | 药芯需要装备在副手。 |
+| 蜕皮 | 药芯 | 立即回溯 | 药芯需要装备在副手。 |
+| 高塔 | 药芯 | 毁灭自己 | 药芯需要装备在副手，**该功能会使玩家强制进入旁观者模式且无法修改！** |
+| 细沙 | 药芯 | 标记一只生物，回溯时将该生物带到自己身边 | 药芯需要装备在副手，标记生物的药芯只能同时触发一个。 |
+| 因果 | 药芯 | 标记一只生物，死亡时使被标记的生物受到基于玩家最大生命值的伤害，并治疗玩家。 | 药芯需要装备在副手，标记生物的药芯只能同时触发一个。 |
+| 万象 | 药芯 | 标记一只生物，该生物受伤时修改玩家主副手的物品 | 药芯需要装备在副手，标记生物的药芯只能同时触发一个。 |
+| 停滞 | 药芯 | 标记一只生物，该生物失去AI一段时间 | 药芯需要装备在副手，标记生物的药芯只能同时触发一个。 |
+| 倒计时 | 模组配置 | 新的一天开始时屏幕上的第X天改为还剩X天。 | **倒计时结束后会使玩家强制进入旁观者模式且无法修改！** |
 
-## 构建
+感谢：
 
-- 需要 JDK 17（Gradle 8.8 由 wrapper 自动下载）。
-- Windows 无 gradlew.bat 时可直接：
-  `java -classpath gradle\wrapper\gradle-wrapper.jar org.gradle.wrapper.GradleWrapperMain build`
-- 产物：`build/libs/rollbackmod-1.1.0-1.20.1-forge.jar`（模组名-模组版本-游戏版本-加载器）。
-
-## 致谢
-
-- 作者 HanMoyun；
-- 朋友 @liyuu，没有他，就没有这个模组；
-- 朋友 @LAST-iMP，教会作者如何从源代码里构建模组；
-- 游玩模组的大家们。
+* 朋友@liyu，没有他，就没有这个模组；
+* 朋友@LAST-iMP，教会作者如何从源代码里构建模组；
+* 游玩模组的大家们。
