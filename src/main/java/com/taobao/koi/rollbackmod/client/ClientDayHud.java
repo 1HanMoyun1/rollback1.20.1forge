@@ -7,8 +7,6 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
-import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
-import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.eventbus.api.IEventBus;
 
 /**
@@ -40,17 +38,9 @@ public final class ClientDayHud {
     private ClientDayHud() {
     }
 
-    /** 注册 HUD：天数常驻层 + 最上层黑屏层。 */
+    /** 注册 HUD：天数常驻层 + 最上层黑屏层（具体注册事件按 MC 版本在 ClientDayHudRegistration 里实现）。 */
     public static void register(IEventBus modBus) {
-        modBus.addListener(ClientDayHud::onRegisterGuiOverlays);
-    }
-
-    private static void onRegisterGuiOverlays(RegisterGuiOverlaysEvent event) {
-        event.registerAbove(VanillaGuiOverlay.HOTBAR.id(), "day_hud",
-                (gui, guiGraphics, partialTick, screenWidth, screenHeight) -> renderDayHud(guiGraphics));
-        // 注册在最上层：确保黑屏能遮挡聊天栏、动作栏等所有 HUD
-        event.registerAboveAll("rollback_transition",
-                (gui, guiGraphics, partialTick, screenWidth, screenHeight) -> renderTransition(guiGraphics));
+        ClientDayHudRegistration.register(modBus);
     }
 
     public static void update(DayInfoPacket packet) {
@@ -88,7 +78,7 @@ public final class ClientDayHud {
         transitionStartedAt = now;
     }
 
-    private static void renderDayHud(GuiGraphics guiGraphics) {
+    public static void renderDayHud(GuiGraphics guiGraphics) {
         Minecraft minecraft = Minecraft.getInstance();
         if (minecraft.player == null || minecraft.options.hideGui || !showHud || isTransitionActive()) {
             return;
@@ -97,7 +87,7 @@ public final class ClientDayHud {
         guiGraphics.drawString(font, textFor(currentDay), 4, 4, 0xFFFFFFFF, true);
     }
 
-    private static void renderTransition(GuiGraphics guiGraphics) {
+    public static void renderTransition(GuiGraphics guiGraphics) {
         Minecraft minecraft = Minecraft.getInstance();
         if (minecraft.player == null || minecraft.options.hideGui || !isTransitionActive()) {
             return;

@@ -6,7 +6,6 @@ import com.taobao.koi.rollbackmod.network.ModNetworking;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraftforge.network.PacketDistributor;
 
 public final class DayCounterManager {
     private static final long TICKS_PER_DAY = 24000L;
@@ -36,9 +35,7 @@ public final class DayCounterManager {
     }
 
     private static void send(MinecraftServer server, DayInfoPacket packet) {
-        for (ServerPlayer player : server.getPlayerList().getPlayers()) {
-            ModNetworking.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), packet);
-        }
+        ModNetworking.sendToAll(server, packet);
     }
 
     /**
@@ -87,10 +84,7 @@ public final class DayCounterManager {
     }
 
     public static void syncTo(ServerPlayer player) {
-        ModNetworking.CHANNEL.send(
-                PacketDistributor.PLAYER.with(() -> player),
-                buildPacket(player.getServer(), false, -1, -1)
-        );
+        ModNetworking.sendToPlayer(player, buildPacket(player.getServer(), false, -1, -1));
     }
 
     public static void syncToAll(MinecraftServer server) {

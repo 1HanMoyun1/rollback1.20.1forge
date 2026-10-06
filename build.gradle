@@ -6,6 +6,18 @@ plugins {
     id 'org.spongepowered.mixin' version '0.7.38'
 }
 
+// ---- 多版本支持：用 -Pmc=<minecraft 版本> 选择 versions/<版本>.properties ----
+def mcTarget = findProperty('mc') ?: '1.20.1'
+def versionFile = file("versions/${mcTarget}.properties")
+if (versionFile.exists()) {
+    def props = new Properties()
+    versionFile.withInputStream { props.load(it) }
+    props.each { key, value -> ext.set(key.toString(), value.toString()) }
+    logger.lifecycle("[rollbackmod] Building for MC ${mcTarget}")
+} else {
+    throw new GradleException("Unknown MC target '${mcTarget}': missing ${versionFile}")
+}
+
 version = mod_version
 group = mod_group_id
 
@@ -13,7 +25,8 @@ base {
     archivesName = mod_id
 }
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+java.toolchain.languageVersion = JavaLanguageVersion.of(
+        (mcTarget == '1.20.5' || mcTarget == '1.20.6') ? 21 : 17)
 
 minecraft {
     mappings channel: mapping_channel, version: mapping_version
@@ -59,6 +72,13 @@ mixin {
 
 sourceSets.main.resources {
     srcDir 'src/generated/resources'
+}
+sourceSets.main.java.srcDir "src/versioned/${mcTarget}/java"
+sourceSets.main.resources.srcDir "src/versioned/${mcTarget}/resources"
+
+// GameTest 只对主版本(1.20.1)编译（其他版本的原版/加载器 API 不同）
+if (mcTarget != '1.20.1') {
+    sourceSets.main.java.exclude '**/gameTest/**'
 }
 
 repositories {
@@ -114,8 +134,11 @@ tasks.named('jar', Jar).configure {
                 'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
     }
+}
 
-    finalizedBy 'reobfJar'
+// Forge 1.20.5+ 运行改用官方映射，不再有 reobfJar 任务
+if (tasks.findByName('reobfJar') != null) {
+    tasks.named('jar').configure { finalizedBy 'reobfJar' }
 }
 
 publishing {

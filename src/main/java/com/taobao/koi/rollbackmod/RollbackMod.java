@@ -31,19 +31,19 @@ public class RollbackMod {
         ModCreativeTabs.register(modBus);
 
         modBus.addListener(this::commonSetup);
-        modBus.addListener((net.minecraftforge.event.RegisterGameTestsEvent event) -> {
-            event.register(com.taobao.koi.rollbackmod.gameTest.RollbackGameTests.class);
-            event.register(com.taobao.koi.rollbackmod.gameTest.RollbackGameplayTests.class);
-        });
 
         CoreEffectRegistry.bootstrap();
         MinecraftForge.EVENT_BUS.register(CommonEvents.class);
         DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> ClientBootstrap::register);
 
-        // Cloth Config 设置界面（可选依赖，客户端打开模组配置时使用）
+        // Cloth Config 设置界面（可选依赖，客户端打开模组配置时使用）。
+        // 未安装 cloth_config 时返回父界面，避免加载 ClothConfigScreen 触发 NoClassDefFoundError。
         ModLoadingContext.get().registerExtensionPoint(
                 ConfigScreenHandler.ConfigScreenFactory.class,
-                () -> new ConfigScreenHandler.ConfigScreenFactory((minecraft, parent) -> ClothConfigScreen.create(parent))
+                () -> new ConfigScreenHandler.ConfigScreenFactory((minecraft, parent) ->
+                        net.minecraftforge.fml.ModList.get().isLoaded("cloth_config")
+                                ? ClothConfigScreen.create(parent)
+                                : parent)
         );
     }
 

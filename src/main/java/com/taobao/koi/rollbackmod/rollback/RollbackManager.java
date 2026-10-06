@@ -157,21 +157,7 @@ public final class RollbackManager {
     }
 
     private static void applyInhalerDurabilityCost(ServerPlayer player, int cost) {
-        ItemStack mainHand = player.getMainHandItem();
-        if (mainHand.getItem() instanceof InhalerItem) {
-            mainHand.hurtAndBreak(cost, player, p -> p.broadcastBreakEvent(InteractionHand.MAIN_HAND));
-            return;
-        }
-        for (ItemStack stack : player.getInventory().items) {
-            if (stack.getItem() instanceof InhalerItem) {
-                stack.hurtAndBreak(cost, player, p -> stack.setCount(0));
-                return;
-            }
-        }
-        ItemStack offhand = player.getOffhandItem();
-        if (offhand.getItem() instanceof InhalerItem) {
-            offhand.hurtAndBreak(cost, player, p -> p.broadcastBreakEvent(InteractionHand.OFF_HAND));
-        }
+        // 吸入器已改为无限耐久，不再扣除耐久（保留方法以兼容调用点）
     }
 
     /** 回溯恢复背包后，消耗触发回溯的那枚药芯（从吸入器里取出）。 */
